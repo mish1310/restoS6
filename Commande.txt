@@ -1,0 +1,45 @@
+1) Affichage
+
+*** Liste produit dispo : nomProduit , categorie(produitfinis , boisson,ingredient) , quantite , unite
+
+* Le client choisit la table qui correspond au nombre de personnes sur cette table
+
+* Choix produits :  categorie , nombre ;; ajouter : le client choisit un categorie de 
+produit a commander , ensuite un produit de cette categorie , prix Unitaire , quantite
+
+
+*Liste commande du client : produits[] , prix total ;; valider
+Le client peut voir sa liste afin de prendre une décision. Soit de changer soit valider
+
+
+
+2) Métier
+
+*Table : idTable , numero , placeDispo ,  
+
+*Produit : idProduit , categorie , intitule , prixUnitaire
+
+*Stock : idStock , idProduit , dateStock , quantite , unite
+	Stock[] getListProduit (Connection con)
+
+	
+*DetailCommande: idDetailCommande,idProduit , quantite , prixUnitaire
+	void insertDetailCommande() ==> Insertion commande d'un produit du client
+
+*Commande : idCommande , idTable , dateCommande ,prixTotal
+	int getAddition(DetailCommande []);
+==> Lister les detailCommande correspondant au commande ensuite additionner
+leur prix respectif (appel vue calculPrixCommande ) 
+
+	void insertCommandeValider(Connexion con) 
+==> Inserer commande valider du client
+
+
+3) Base 
+<==> similaire classe métier
+table detailCommande 
+
+* vue calculPrixCommande(prixUnitaire*quantite)
+
+
+
