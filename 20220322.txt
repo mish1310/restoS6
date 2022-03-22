@@ -1,0 +1,14 @@
+1) Affichage 
+*** Liste produit dispo : nomProduit , categorie(produitfinis , boisson,ingredient) , quantite , unite
+
+2) Métier 
+
+*Produit : idProduit , categorie , intitule , prixUnitaire
+
+*Stock : idStock , idProduit , dateStock , quantite , unite
+	Stock[] getListProduit (Connection con)
+
+3) Base : similaire metier
+Table produit et stock
+vue  produitDispo:: select produit.categorie,produit.intitule,stock.quantite,stock.unite
+ from produit join stock on produit.idproduit = stock.idproduit
