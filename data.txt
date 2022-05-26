@@ -1,0 +1,131 @@
+create view produitDispo as (select prod.idCategorie,cat.nomCategorie,prod.intitule from categorie cat join produit prod on cat.idCategorie=prod.idCategorie); 
+
+create table categorie(
+	idCategorie int not null primary key,
+	nomCategorie varchar(70)
+);
+
+insert into categorie(idCategorie,nomCategorie) values (1,'desert');
+insert into categorie(idCategorie,nomCategorie) values (2,'plat de resistance');
+insert into categorie(idCategorie,nomCategorie) values (3,'entree froide');
+insert into categorie(idCategorie,nomCategorie) values (4,'entree chaude');
+
+create table produit(
+	idProduit serial primary key,
+	idCategorie int,
+	intitule varchar(30),
+	prixUnitaire float,
+	foreign key(idCategorie) references categorie(idCategorie) 
+);
+
+insert into produit(idCategorie ,intitule,prixUnitaire) values (1,'salade des fruits',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (1,'yaourt au choco',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (2,'riz cantonnais',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (3,'salade de patte',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (4,'crepe au fromage',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'patte',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'fromage',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'tomate',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'oeuf',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'banane',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'yaourt',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'chocolat',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'riz',null);
+insert into produit(idCategorie ,intitule,prixUnitaire) values (null,'carotte',null);
+
+create table ingredientPlat(
+	idProduitConstituant int,
+	idProduitConstitue int,
+	quantite float,
+	foreign key(idProduitConstituant) references produit(idProduit),
+	foreign key(idProduitConstitue) references produit(idProduit)  
+);
+
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (11,1,10);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (10,1,25);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (11,2,10);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (12,2,20);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (13,3,150);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (9,3,15);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (14,3,120);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (6,4,250);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (14,4,120);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (9,4,50);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (7,5,50);
+insert into ingredientPlat(idProduitConstituant,idProduitConstitue,quantite) values (6,5,50);
+
+create table stock(
+	idStock serial primary key,
+	idProduit int,
+	prixUnitaire float,
+	dateStock date,
+	foreign key(idProduit) references produit(idProduit) 
+);
+
+insert into stock(idProduit,prixUnitaire,dateStock) values (6,1000,'2022/03/20');
+insert into stock(idProduit,prixUnitaire,dateStock) values (7,900,'2022/03/20');
+insert into stock(idProduit,prixUnitaire,dateStock) values (8,200,'2022/03/20');
+insert into stock(idProduit,prixUnitaire,dateStock) values (9,500,'2022/03/20');
+insert into stock(idProduit,prixUnitaire,dateStock) values (10,100,'2022/03/20');
+insert into stock(idProduit,prixUnitaire,dateStock) values (11,170,'2022/03/20');
+insert into stock(idProduit,prixUnitaire,dateStock) values (12,90,'2022/03/20');
+insert into stock(idProduit,prixUnitaire,dateStock) values (13,200,'2022/03/20');
+insert into stock(idProduit,prixUnitaire,dateStock) values (14,700,'2022/03/20');
+
+
+create view prixFabricationPlat as (select sum(ing.quantite*stk.prixUnitaire) as prixTotalFabrication ,ing.idProduitConstitue as plat from ingredientPlat ing join stock stk on ing.idProduitConstituant=stk.idProduit group by ing.idProduitConstitue);
+
+
+create table serveur(
+	idServeur int primary key,
+	nomServeur varchar(30)
+);
+
+insert into serveur values (1,'SERVEUR01');	
+insert into serveur values (2,'SERVEUR02');
+insert into serveur values (3,'SERVEUR03');
+
+
+create table tables(
+	idTable int primary key,
+	numero int,
+	placeDispo int
+);
+
+insert into tables values (1,1,4);
+insert into tables values (2,2,4);
+insert into tables values (3,3,4);
+
+create table commande(
+	idCommande serial primary key,
+	prixTotal float,
+	dateCommande date,
+	idTable int,
+	foreign key(idTable) references tables(idTable)
+);
+
+insert into commande (prixTotal,dateCommande,idTable) values (null,'2022/03/20',1);
+insert into commande (prixTotal,dateCommande,idTable) values (null,'2022/03/20',2);
+insert into commande (prixTotal,dateCommande,idTable) values (null,'2022/03/20',3);
+insert into commande (prixTotal,dateCommande,idTable) values (null,'2022/03/21',1);
+
+create table detailsCommande(
+	idDetailsCommande serial primary key,
+	idProduit int,
+	quantite int,
+	idCommande int,
+	prixUnitaire float,
+	idServeur int,
+	foreign key(idProduit) references produit(idProduit),
+	foreign key(idServeur) references serveur(idServeur),
+	foreign key(idCommande) references commande(idCommande)
+);
+
+
+insert into detailsCommande (idProduit,quantite,idCommande,prixUnitaire,idServeur) values (1,2,1,4200,1);
+insert into detailsCommande (idProduit,quantite,idCommande,prixUnitaire,idServeur) values (2,2,1,3500,1);
+insert into detailsCommande (idProduit,quantite,idCommande,prixUnitaire,idServeur) values (1,1,2,4200,2);
+insert into detailsCommande (idProduit,quantite,idCommande,prixUnitaire,idServeur) values (2,1,2,3500,1);
+insert into detailsCommande (idProduit,quantite,idCommande,prixUnitaire,idServeur) values (3,2,2,121500,3);
+insert into detailsCommande (idProduit,quantite,idCommande,prixUnitaire,idServeur) values (4,3,4,121,3);
+
