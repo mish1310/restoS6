@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="bootstrap-4.3-2.1-dist\css\bootstrap.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <title>JSP Page</title>
     </head>
     <body>

@@ -8,6 +8,8 @@ package modele;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -18,10 +20,26 @@ import java.util.HashMap;
 public class Paiement {
     
     private int idPayement;
-    private DetailCommande detailCommande;
+    private Commande commande;
     private TypePaiement typePaiement;
     private double montant;
     private Date datePaiement;
+    
+    public void insert() throws Exception  {
+        Connection con = DBConnection.getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String requete = "INSERT INTO paiement(idCommande, idTypePaiement, montant, datePaiement) VALUES ("+this.commande.getIdCommande()+","
+                    + this.typePaiement.getIdTypePayement() +", "+ this.montant +", '"+ dateFormat.format(this.datePaiement) +"' )";
+            Boolean rs =  stmt.execute(requete);
+            con.close();
+        }
+        catch(Exception ex){
+            if(con != null) con.close();
+            throw ex;
+        }
+    }
     
     public HashMap<String, Double> getTotalPayement(String date1, String date2) throws Exception {
         HashMap<String, Double> retour = new HashMap<String, Double>();
@@ -49,12 +67,12 @@ public class Paiement {
         this.idPayement = idPayement;
     }
 
-    public DetailCommande getDetailCommande() {
-        return detailCommande;
+    public Commande getCommande() {
+        return commande;
     }
 
-    public void setDetailCommande(DetailCommande detailCommande) {
-        this.detailCommande = detailCommande;
+    public void setCommande(Commande commande) {
+        this.commande = commande;
     }
 
     public TypePaiement getTypePaiement() {

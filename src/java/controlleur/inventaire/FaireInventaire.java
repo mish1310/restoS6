@@ -3,10 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlleur.produit;
+package controlleur.inventaire;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,12 +17,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Produit;
+import modele.Inventaire;
 
 /**
  *
- * @author User
+ * @author Manda
  */
-public class ListeProduitByCategorie extends HttpServlet {
+public class FaireInventaire extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +36,35 @@ public class ListeProduitByCategorie extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
-        try {
-            List<Produit> listeProduit = new Produit().selectAllByCategorie(Integer.valueOf(request.getParameter("idCategorie")));
-            request.setAttribute("listeProduit", listeProduit);
-            RequestDispatcher dispat = request.getRequestDispatcher("FenTabProduit.jsp");
-            dispat.forward(request, response);
-        } catch (Exception ex) {
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-                out.print(ex.getMessage());
+
+        // si il faut faire l'inventaire de tous les produits
+        if (request.getParameter("tout") != null) {
+            try{
+                Inventaire inventaire = new Inventaire();
+                Calendar dateAct = Calendar.getInstance();
+                inventaire.setDateInventaire(dateAct.getTime());
+                inventaire.faireInventaire();
+                response.sendRedirect("Inventaire");
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+            }
+        } // si il faut faire l'inventaire d'un produit
+        else {
+            try {
+                Produit produit = new Produit(Integer.valueOf(request.getParameter("idProduit")));
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                Date dateInventaire = formater.parse(request.getParameter("dateInventaire"));
+                Inventaire inventaire = new Inventaire(produit, dateInventaire);
+                inventaire.faireInventaireProduit();
+                request.setAttribute("inventaire", inventaire);
+                RequestDispatcher dispat = request.getRequestDispatcher("resultatInventaire.jsp");
+                dispat.forward(request, response);
+            } catch (Exception ex) {
+                response.setContentType("text/html;charset=UTF-8");
+                try (PrintWriter out = response.getWriter()) {
+                    out.print(ex.getMessage());
+                }
             }
         }
     }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlleur.produit;
+package controlleur.statistique;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,13 +13,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modele.Produit;
+import modele.StatAchatProduit;
+import modele.StatVenteProduit;
+
 
 /**
  *
- * @author Manda
+ * @author Dx2Big
  */
-public class PageFormulaireInventaire extends HttpServlet {
+public class fenStatAchat extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +34,19 @@ public class PageFormulaireInventaire extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
-        try {
-            List<Produit> listeProduit = Produit.getAllIngredients();
-            request.setAttribute("listeProduit", listeProduit);
-            RequestDispatcher dispat = request.getRequestDispatcher("formulaireInventaire.jsp");
-            dispat.forward(request, response);
-        } catch (Exception ex) {
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-                out.print(ex.getMessage());
-            }
+        response.setContentType("text/html;charset=UTF-8");
+        StatAchatProduit s=new StatAchatProduit();
+        try{
+            /* TODO output your page here. You may use following sample code. */
+            String annee=request.getParameter("annee");
+             List<StatAchatProduit> liste=s.listeAchat(annee);
+            request.setAttribute("statAchatProduit", liste);
+             RequestDispatcher dispat = request.getRequestDispatcher("statistique/statAchatProduit.jsp");
+             dispat.forward(request, response);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
         }
     }
 

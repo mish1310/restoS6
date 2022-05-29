@@ -39,11 +39,13 @@ public class SuggestionPrixVente extends HttpServlet {
             double montantSup = Double.valueOf(request.getParameter("montantSup"));
             double pourcentageSuggestion = Double.valueOf(request.getParameter("pourcentageSuggestion"));
             Produit p = new Produit();
+            
             List changement = p.suggestionPrix(montantInf, montantSup, pourcentageSuggestion);
             request.setAttribute("changement", changement);
-            RequestDispatcher dispat = request.getRequestDispatcher("resultatSuggestionPrixVente.jsp");
-            dispat.forward(request, response);
+            
+            response.sendRedirect("ListeProduit");
         } catch (Exception ex) {
+            ex.printStackTrace();
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
                 out.print(ex.getMessage());

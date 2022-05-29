@@ -120,3 +120,21 @@ INSERT INTO profil(nomProfil, motDePasse) VALUES('serveur', '2');
 INSERT INTO profil(nomProfil, motDePasse) VALUES('cuisiner', '3');
 INSERT INTO profil(nomProfil, motDePasse) VALUES('caissier', '4');
 
+UPDATE produit SET prixUnitaire=6000 WHERE idProduit=1;
+UPDATE produit SET prixUnitaire=2000 WHERE idProduit=2;
+UPDATE produit SET prixUnitaire=5000 WHERE idProduit=3;
+UPDATE produit SET prixUnitaire=7000 WHERE idProduit=4;
+UPDATE produit SET prixUnitaire=8000 WHERE idProduit=5;
+
+UPDATE stock SET quantite = 50000 WHERE idStock=1;
+UPDATE stock SET quantite = 10000 WHERE idStock=2;
+UPDATE stock SET quantite = 5000 WHERE idStock=3;
+UPDATE stock SET quantite = 3000 WHERE idStock=4;
+UPDATE stock SET quantite = 10000 WHERE idStock=5;
+UPDATE stock SET quantite = 2000 WHERE idStock=6;
+UPDATE stock SET quantite = 5000 WHERE idStock=7;
+UPDATE stock SET quantite = 1000 WHERE idStock=8;
+UPDATE stock SET quantite = 1000 WHERE idStock=9;
+
+
+UPDATE profil SET motdepasse='mdpprom13';

@@ -42,6 +42,23 @@ public class Categorie {
         return retour;
     }
     
+    public Categorie select(Connection con) throws Exception{
+        Categorie retour = new Categorie();
+        try{
+            Statement stmt = con.createStatement();
+            String requete = "SELECT * FROM categorie WHERE idCategorie="+this.idCategorie;
+            ResultSet rs = stmt.executeQuery(requete);
+            while (rs.next()) {
+                Categorie c = new Categorie(rs.getInt("idCategorie"), rs.getString("nomCategorie"));
+                return c;
+            }
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+        return retour;
+    }
+    
     public Categorie select() throws Exception{
         Categorie retour = new Categorie();
         Connection con = DBConnection.getConnection();

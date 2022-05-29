@@ -36,7 +36,7 @@ public class PageFormulaireLogin extends HttpServlet {
         try{
             List<Profil> listeProfil = Profil.selectAll();
             request.setAttribute("listeProfil", listeProfil);
-            RequestDispatcher dispat = request.getRequestDispatcher("login.jsp");
+            RequestDispatcher dispat = request.getRequestDispatcher("utilisateur/login.jsp");
             dispat.forward(request, response);
         } catch (Exception ex){
             response.setContentType("text/html;charset=UTF-8");

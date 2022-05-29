@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.Categorie;
 import modele.Produit;
 
 /**
@@ -34,18 +35,30 @@ public class ListeProduit extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/plain");
         try {
-            if (request.getParameter("idCategorie").compareTo("tout") == 0) {
+            List<Categorie> categories = new Categorie().selectAll();
+            request.setAttribute("categories", categories);
+
+            if (request.getParameter("categorie") == null) {
                 List<Produit> listeProduit = new Produit().selectAllVendable();
                 request.setAttribute("listeProduit", listeProduit);
-                RequestDispatcher dispat = request.getRequestDispatcher("produit/FenTabProduit.jsp");
+
+                RequestDispatcher dispat = request.getRequestDispatcher("produit/listeProduit.jsp");
+                dispat.forward(request, response);
+            } else if (Integer.valueOf(request.getParameter("categorie")) == 0){
+                List<Produit> listeProduit = new Produit().selectAllVendable();
+                request.setAttribute("listeProduit", listeProduit);
+
+                RequestDispatcher dispat = request.getRequestDispatcher("produit/listeProduit.jsp");
                 dispat.forward(request, response);
             } else {
-                List<Produit> listeProduit = new Produit().selectAllByCategorie(Integer.valueOf(request.getParameter("idCategorie")));
+                List<Produit> listeProduit = new Produit().selectAllByCategorie(Integer.valueOf(request.getParameter("categorie")));
                 request.setAttribute("listeProduit", listeProduit);
-                RequestDispatcher dispat = request.getRequestDispatcher("FenTabProduit.jsp");
-                dispat.forward(request, response);  
+
+                RequestDispatcher dispat = request.getRequestDispatcher("produit/listeProduit.jsp");
+                dispat.forward(request, response);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {
                 out.print(ex.getMessage());

@@ -38,15 +38,23 @@ public class Login extends HttpServlet {
             Profil profil = new Profil(Integer.valueOf(request.getParameter("idProfil")), null, request.getParameter("motDePasse"));
             boolean connection = profil.login();
             if (!connection) {
-                throw new Exception("Veuillez verifier le mot de passe ou le profil");
+                request.setAttribute("erreurMdp", true);
+
+                List<Profil> listeProfil = Profil.selectAll();
+                request.setAttribute("listeProfil", listeProfil);
+
+                RequestDispatcher dispat = request.getRequestDispatcher("utilisateur/login.jsp");
+                dispat.forward(request, response);
             }
+            
             HttpSession session = request.getSession();
             profil.setMotDePasse(null);
+            profil.setIdProfil(Integer.valueOf(request.getParameter("idProfil")));
             session.setAttribute("profil", profil);
-            
+
             RequestDispatcher dispat = request.getRequestDispatcher("Redirection");
             dispat.forward(request, response);
-            
+
         } catch (Exception ex) {
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {

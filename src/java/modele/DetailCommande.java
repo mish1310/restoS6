@@ -29,15 +29,32 @@ public class DetailCommande {
     private Date dateCommande;
     
     
+    public void fabriquer() throws Exception {
+        Connection con = DBConnection.getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            String requete = "INSERT INTO etatPlat(idetat, iddetailscommande) VALUES (1,"+this.idDetailCommande+")";
+            Boolean res = stmt.execute(requete);
+            con.close();
+        }
+        catch(Exception ex){
+            if(con != null) con.close();
+            throw ex;
+        }
+    }
+    
+    
     public void livrer() throws Exception {
         Connection con = DBConnection.getConnection();
         try{
             Statement stmt = con.createStatement();
             String requete = "UPDATE etatplat SET idEtat=2 WHERE iddetailscommande="+this.idDetailCommande;
             Boolean res = stmt.execute(requete);
+            con.close();
         }
         catch(Exception ex){
             if(con != null) con.close();
+            throw ex;
         }
     }
     
@@ -147,7 +164,7 @@ public class DetailCommande {
         Connection con = DBConnection.getConnection();
         try {
             Statement stmt = con.createStatement();
-            String requete = "SELECT * FROM platAFaire ORDER BY dateCommande ASC";
+            String requete = "SELECT * FROM platNonFabrique ORDER BY dateCommande ASC";
             ResultSet rs = stmt.executeQuery(requete);
             while (rs.next()) {
                 Produit produit = new Produit();
@@ -159,6 +176,7 @@ public class DetailCommande {
                          rs.getDate("dateCommande"));
                 retour.add(detailCommande);
             }
+            con.close();
         } catch (Exception ex) {
             con.close();
             throw ex;

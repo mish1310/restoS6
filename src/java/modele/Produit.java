@@ -25,17 +25,163 @@ public class Produit {
     private Categorie categorie;
     private String unite;
     
+    public void insert()throws Exception {
+        Connection con = DBConnection.createDataSource().getConnection();
+        try {
+            Statement stmt = con.createStatement();
+            String requete = "INSERT INTO produit(intitule, idCategorie, prixUnitaire, unite) VALUES ('"+ this.intitule +"', "+ this.categorie.getIdCategorie() +", "+ this.prixUnitaire +", '"+ this.getUnite() +"'  )";
+            Boolean insert = stmt.execute(requete);
+            ResultSet rs = stmt.executeQuery("SELECT MAX(idproduit) FROM produit");
+            while (rs.next()) {
+                this.idProduit = rs.getInt("max");
+            }
+        } catch (Exception ex) {
+            con.close();
+            throw ex;
+        } 
+    }
+    
+    public static List<Produit> selectAllIngredients() throws Exception {
+        Connection con = DBConnection.createDataSource().getConnection();
+        List<Produit> retour = new ArrayList<Produit>();
+        try {
+            Statement stmt = con.createStatement();
+            String requete = "SELECT * FROM produit WHERE idCategorie IS NULL ORDER BY intitule ";
+            ResultSet rs = stmt.executeQuery(requete);
+            while (rs.next()) {
+                Produit p = new Produit(rs.getInt("idProduit"), rs.getString("intitule"), rs.getDouble("prixUnitaire"));
+                Categorie c = new Categorie(rs.getInt("idCategorie"));
+                c = c.select(con);
+                p.setCategorie(c);
+                retour.add(p);
+            }
+            con.close();
+        } catch (Exception ex) {
+            con.close();
+            throw ex;
+        } 
+        return retour;
+    }
+    
+    public static void insertRecette(Produit produitConstitue, Produit produitConstituant, Double quantite) throws Exception {
+        Connection con = DBConnection.createDataSource().getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            String requete = "INSERT INTO ingredientplat(idProduitConstitue, idProduitConstituant, quantite) VALUES("+produitConstitue.getIdProduit()+", "+produitConstituant.getIdProduit()+", "+quantite+" )";
+            System.out.println(requete);
+            Boolean rs = stmt.execute(requete);
+            con.close();
+        }
+        catch(Exception ex){
+            con.close();
+            throw ex;
+        }
+    }
+    
+    public static void supprimerRecette(Produit produitConstitue, Produit produitConstituant) throws Exception {
+        Connection con = DBConnection.createDataSource().getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            String requete = "DELETE FROM ingredientplat WHERE idProduitConstituant="+produitConstituant.getIdProduit()+" AND idProduitConstitue="+produitConstitue.getIdProduit();
+            Boolean rs = stmt.execute(requete);
+            con.close();
+        }
+        catch(Exception ex){
+            con.close();
+            throw ex;
+        }
+    }
+    
+    public static void updateRecette(Produit produitConstitue, Produit produitConstituant, Double quantite) throws Exception {
+        Connection con = DBConnection.createDataSource().getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            String requete = "UPDATE ingredientplat SET quantite="+quantite+" WHERE idProduitConstituant="+produitConstituant.getIdProduit()+" AND idProduitConstitue="+produitConstitue.getIdProduit();
+            Boolean rs = stmt.execute(requete);
+            con.close();
+        }
+        catch(Exception ex){
+            con.close();
+            throw ex;
+        }
+    }
+    
+    public static List<Produit> selectAllOrderByIntitule() throws Exception {
+        Connection con = DBConnection.createDataSource().getConnection();
+        List<Produit> retour = new ArrayList<Produit>();
+        try {
+            Statement stmt = con.createStatement();
+            String requete = "SELECT * FROM produit ORDER BY intitule";
+            ResultSet rs = stmt.executeQuery(requete);
+            while (rs.next()) {
+                Produit p = new Produit(rs.getInt("idProduit"), rs.getString("intitule"), rs.getDouble("prixUnitaire"));
+                Categorie c = new Categorie(rs.getInt("idCategorie"));
+                c = c.select(con);
+                p.setCategorie(c);
+                retour.add(p);
+            }
+            con.close();
+        } catch (Exception ex) {
+            con.close();
+            throw ex;
+        } 
+        return retour;
+    }
+    
+    public static List<Produit> selectAll(Connection con) throws Exception {
+        List<Produit> retour = new ArrayList<Produit>();
+        try {
+            Statement stmt = con.createStatement();
+            String requete = "SELECT * FROM produit";
+            ResultSet rs = stmt.executeQuery(requete);
+            while (rs.next()) {
+                Produit p = new Produit(rs.getInt("idProduit"), rs.getString("intitule"), rs.getDouble("prixUnitaire"));
+                Categorie c = new Categorie(rs.getInt("idCategorie"));
+                c = c.select(con);
+                p.setCategorie(c);
+                retour.add(p);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } 
+        return retour;
+    }
+    
+    public static List<Produit> selectAll() throws Exception {
+        List<Produit> retour = new ArrayList<Produit>();
+        Connection con = DBConnection.createDataSource().getConnection();
+        try {
+            Statement stmt = con.createStatement();
+            String requete = "SELECT * FROM produit";
+            ResultSet rs = stmt.executeQuery(requete);
+            while (rs.next()) {
+                Produit p = new Produit(rs.getInt("idProduit"), rs.getString("intitule"), rs.getDouble("prixUnitaire"));
+                Categorie c = new Categorie(rs.getInt("idCategorie"));
+                c = c.select(con);
+                p.setCategorie(c);
+                retour.add(p);
+            }
+        } catch (Exception ex) {
+            con.close();
+            throw ex;
+        } finally {
+            con.close();
+        }
+        return retour;
+    }
+
+    
     public static List<Produit> getAllIngredients() throws Exception {
         List<Produit> retour = new ArrayList<Produit>();
         Connection con = DBConnection.getConnection();
         try {
             Statement stmt = con.createStatement();
-            String requete = "SELECT p.idProduit, p.intitule, p.prixUnitaire, p.idCategorie FROM ingredientPlat iP JOIN produit p ON iP.idProduitConstituant=p.idProduit WHERE p.idCategorie IS NULL ";
+            String requete = "SELECT p.idProduit, p.intitule, p.prixUnitaire, p.idCategorie FROM ingredientPlat iP JOIN produit p ON iP.idProduitConstituant=p.idProduit WHERE p.idCategorie IS NULL  ";
             ResultSet rs = stmt.executeQuery(requete);
             while (rs.next()) {
                 Produit p = new Produit(rs.getInt("idProduit"), rs.getString("intitule"), rs.getDouble("prixUnitaire"));
                 Categorie c = new Categorie(rs.getInt("idCategorie"));
-                c = c.select();
+                c = c.select(con);
                 p.setCategorie(c);
                 retour.add(p);
             }
@@ -193,7 +339,7 @@ public class Produit {
 
     public List<Produit> getAllConstituant() throws Exception {
         List<Produit> retour = new ArrayList<Produit>();
-        Connection con = DBConnection.getConnection();
+        Connection con = DBConnection.createDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             String requete = "SELECT p.idProduit, p.intitule, p.prixUnitaire, p.idCategorie FROM ingredientPlat iP JOIN produit p ON iP.idProduitConstituant=p.idProduit WHERE idProduitConstitue = " + this.idProduit;
@@ -201,7 +347,7 @@ public class Produit {
             while (rs.next()) {
                 Produit p = new Produit(rs.getInt("idProduit"), rs.getString("intitule"), rs.getDouble("prixUnitaire"));
                 Categorie c = new Categorie(rs.getInt("idCategorie"));
-                c = c.select();
+                c = c.select(con);
                 p.setCategorie(c);
                 retour.add(p);
             }
@@ -213,7 +359,7 @@ public class Produit {
         }
         return retour;
     }
-
+    
     public Produit select() throws Exception {
         Produit retour = null;
         Connection con = DBConnection.getConnection();
@@ -224,7 +370,7 @@ public class Produit {
             while (rs.next()) {
                 Produit p = new Produit(rs.getInt("idProduit"), rs.getString("intitule"), rs.getDouble("prixUnitaire"));
                 Categorie c = new Categorie(rs.getInt("idCategorie"));
-                c = c.select();
+                c = c.select(con);
                 p.setCategorie(c);
                 retour = p;
             }

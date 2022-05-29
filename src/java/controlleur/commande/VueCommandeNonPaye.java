@@ -7,7 +7,7 @@ package controlleur.commande;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Commande;
-import modele.DBConnection;
-import modele.DetailCommande;
 
 /**
  *
@@ -35,29 +33,23 @@ public class VueCommandeNonPaye extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
-        Connection con = null;
-        try {
-            con = DBConnection.getConnection();
-            // recuperation de la liste des commandes non payés
-            String date = request.getParameter("date");
-            List<Commande> listeCommandeNonPaye = Commande.getCommandeNonPaye(date, con);
-            List<Double> listePayementCommande = Commande.getPayementCommande(listeCommandeNonPaye, con);
-            request.setAttribute("listeCommandeNonPayes", listeCommandeNonPaye);
-            request.setAttribute("listePaiementCommande", listePayementCommande);
+        
+        try{
+            List<Commande> listeCommandeNonPayes = Commande.getCommandeNonPaye();
+            request.setAttribute("listeCommandeNonPayes", listeCommandeNonPayes);
+            
+            List<Double> listePaiementCommande = new ArrayList<Double>();
+            for (Commande commande : listeCommandeNonPayes){
+                listePaiementCommande.add(commande.getSommePayement());
+            }
+            request.setAttribute("listePaiementCommande", listePaiementCommande);
+            
             RequestDispatcher dispat = request.getRequestDispatcher("commande/listeCommandeNonPaye.jsp");
             dispat.forward(request, response);
-        } catch (Exception ex) {
-            try{
-                con.close();
-            } catch(Exception e){
-                
-            }
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-                out.print(ex.getMessage());
-            }
+        }catch(Exception ex) {
+            ex.printStackTrace();
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

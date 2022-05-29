@@ -26,7 +26,38 @@ public class Commande {
     private Table table;
     private Date dateCommande;
     private Double prixTotal;
+    private Double sommePayement;
     private List<DetailCommande> listeDetailCommande;
+    
+    
+    
+    public Commande select() throws Exception {
+        Connection con = DBConnection.getConnection();
+        Commande c = new Commande();
+        try{
+            Statement stmt = con.createStatement();
+            String requete = "SELECT * FROM commande WHERE idCommande=" + this.idCommande;
+            ResultSet rs = stmt.executeQuery(requete);
+            while(rs.next()){
+                c.setIdCommande(rs.getInt("idCommande"));
+                Table table = new Table();
+                table.setIdTable(rs.getInt("idTable"));
+                c.setTable(table);
+                c.setDateCommande(rs.getDate("dateCommande"));
+                c.setPrixTotal(rs.getDouble("prixTotal"));
+            }
+            requete = "SELECT sommepayement FROM commandeNonPaye WHERE idCommande=" + this.idCommande;
+            rs = stmt.executeQuery(requete);
+            while(rs.next()){
+                c.setSommePayement(rs.getDouble("sommePayement"));
+            }
+        }
+        catch(Exception ex){
+            if(con != null) con.close();
+            throw ex;
+        }
+        return c;
+    }
 
     public void ajouterDetailCommande(List<DetailCommande> listeDetailCommande) throws Exception {
         Connection con = DBConnection.getConnection();
@@ -62,6 +93,29 @@ public class Commande {
                 retour.add(ajout);
             }
         } catch (Exception ex) {
+            throw ex;
+        }
+        return retour;
+    }
+    
+    public static List<Commande> getCommandeNonPaye() throws Exception {
+        Connection con = DBConnection.getConnection();
+        List<Commande> retour = new ArrayList<Commande>();
+        try {
+            Statement stmt = con.createStatement();
+            String requete = "SELECT cnp.idCommande, cnp.dateCommande, cnp.prixTotal, sommePayement, c.idTable FROM commandeNonPaye cnp JOIN commande c ON c.idCommande = cnp.idCommande ORDER BY dateCommande ASC";
+            ResultSet rs = stmt.executeQuery(requete);
+            while (rs.next()) {
+                Commande commande = new Commande(rs.getInt("idCommande"), null, rs.getDate("dateCommande"), rs.getDouble("prixTotal"));
+                commande.setSommePayement(rs.getDouble("sommePayement"));
+                Table table = new Table();
+                table.setIdTable(rs.getInt("idTable"));
+                commande.setTable(table);
+                retour.add(commande);
+            }
+            con.close();
+        } catch (Exception ex) {
+            if(con != null) con.close();
             throw ex;
         }
         return retour;
@@ -106,7 +160,7 @@ public class Commande {
         Connection con = DBConnection.getConnection();
         try {
             Statement stmt = con.createStatement();
-            String requete = "SELECT * from detailCommande WHERE idCommande=" + this.idCommande;
+            String requete = "SELECT * from detailsCommande WHERE idCommande=" + this.idCommande+ " ORDER BY idProduit ";
             ResultSet rs = stmt.executeQuery(requete);
             while (rs.next()) {
                 Produit produit = new Produit();
@@ -114,8 +168,9 @@ public class Commande {
                 produit = produit.select(con);
                 DetailCommande detailCommande = new DetailCommande(rs.getInt("idDetailsCommande"),
                         new Commande(rs.getInt("idCommande")),
-                        new Produit(),
+                        produit,
                         rs.getDate("dateCommande"));
+                detailCommande.setPrixUnitaire(rs.getDouble("prixunitaire"));
                 retour.add(detailCommande);
             }
             this.setListeDetailCommande(retour);
@@ -296,6 +351,14 @@ public class Commande {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    public Double getSommePayement() {
+        return sommePayement;
+    }
+
+    public void setSommePayement(Double sommePayement) {
+        this.sommePayement = sommePayement;
     }
 
 }

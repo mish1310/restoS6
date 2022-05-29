@@ -33,7 +33,6 @@ public class VuePayementCommande extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
         try {
             // recuperation des objets
             Commande commande = new Commande(Integer.valueOf(request.getParameter("idCommande")));

@@ -40,16 +40,16 @@ public class Redirection extends HttpServlet {
                 dispat.forward(request, response);
             }
             if (profil.getIdProfil() == 1) {
-                RequestDispatcher dispat = request.getRequestDispatcher("PageFormulairePouboire");
+                RequestDispatcher dispat = request.getRequestDispatcher("AccueilAdmin");
                 dispat.forward(request, response);
             } else if (profil.getIdProfil() == 2) {
-                RequestDispatcher dispat = request.getRequestDispatcher("PageFormulaireInsertionCommande");
+                RequestDispatcher dispat = request.getRequestDispatcher("Accueil");
                 dispat.forward(request, response);
             } else if (profil.getIdProfil() == 3) {
-                RequestDispatcher dispat = request.getRequestDispatcher("VueCuisine");
+                RequestDispatcher dispat = request.getRequestDispatcher("AccueilCuisine");
                 dispat.forward(request, response);
             } else if (profil.getIdProfil() == 4) {
-                RequestDispatcher dispat = request.getRequestDispatcher("VueCaisse");
+                RequestDispatcher dispat = request.getRequestDispatcher("AccueilCaisse");
                 dispat.forward(request, response);
             }
         } catch (Exception ex) {

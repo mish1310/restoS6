@@ -38,10 +38,16 @@ public class RecetteProduit extends HttpServlet {
             Produit produit = new Produit();
             produit.setIdProduit(Integer.valueOf(request.getParameter("idProduit")));
             produit = produit.select();
+            request.setAttribute("produit", produit);
+            
             List<Object[]> recetteProduit = produit.getRecette();
             request.setAttribute("recetteProduit", recetteProduit);
-            request.setAttribute("produit", produit);
-            RequestDispatcher dispat = request.getRequestDispatcher("recettePlat.jsp");
+            
+            // liste des ingredients
+            List<Produit> ingredients = Produit.selectAllIngredients();
+            request.setAttribute("ingredients", ingredients);
+            
+            RequestDispatcher dispat = request.getRequestDispatcher("produit/recettePlat.jsp");
             dispat.forward(request, response);
         } catch (Exception ex) {
             response.setContentType("text/html;charset=UTF-8");

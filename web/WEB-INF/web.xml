@@ -22,7 +22,7 @@
     </servlet>
     <servlet>
         <servlet-name>PageFormulaireSuggestion</servlet-name>
-        <servlet-class>controlleur.produit.PageFormulaireSuggestion</servlet-class>
+        <servlet-class>controlleur.produit.SuggesionPrixVente</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PageFormulaireInsertionCommande</servlet-name>
@@ -45,8 +45,8 @@
         <servlet-class>controlleur.serveur.VoirPouboire</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PageFormulaireInsertionProduit</servlet-name>
-        <servlet-class>controlleur.produit.PageFormulaireInsertionProduit</servlet-class>
+        <servlet-name>InsererProduit</servlet-name>
+        <servlet-class>controlleur.produit.InsererProduit</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PourBoire</servlet-name>
@@ -81,20 +81,16 @@
         <servlet-class>controlleur.paiement.PayerPlat</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>VueCommandeNonPaye</servlet-name>
-        <servlet-class>controlleur.commande.VueCommandeNonPaye</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ConstituantPlatsGeneralise</servlet-name>
         <servlet-class>controlleur.produit.ConstituantPlatsGeneralise</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PageFormulaireInventaire</servlet-name>
-        <servlet-class>controlleur.produit.PageFormulaireInventaire</servlet-class>
+        <servlet-name>Inventaire</servlet-name>
+        <servlet-class>controlleur.inventaire.Inventaire</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>FaireInventaire</servlet-name>
-        <servlet-class>controlleur.produit.FaireInventaire</servlet-class>
+        <servlet-class>controlleur.inventaire.FaireInventaire</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RecupererMontant</servlet-name>
@@ -148,6 +144,54 @@
         <servlet-name>AccueilCaisse</servlet-name>
         <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PayerCommande</servlet-name>
+        <servlet-class>controlleur.commande.PayerCommande</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccueilCuisine</servlet-name>
+        <servlet-class>controlleur.cuisine.AccueilCuisine</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FabriquerPlat</servlet-name>
+        <servlet-class>controlleur.detailCommande.FabriquerPlat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccueilAdmin</servlet-name>
+        <servlet-class>controlleur.admin.AccueilAdmin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ModifierRecette</servlet-name>
+        <servlet-class>controlleur.produit.ModifierRecette</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GererStock</servlet-name>
+        <servlet-class>controlleur.stock.GererStock</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VueCommandeNonPaye</servlet-name>
+        <servlet-class>controlleur.commande.VueCommandeNonPaye</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatAchat</servlet-name>
+        <servlet-class>controlleur.statistique.StatAchat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatVente</servlet-name>
+        <servlet-class>controlleur.statistique.StatVente</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>fenStatAchat</servlet-name>
+        <servlet-class>controlleur.statistique.fenStatAchat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>fenStatVente</servlet-name>
+        <servlet-class>controlleur.statistique.fenStatVente</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Deconnection</servlet-name>
+        <servlet-class>controlleur.utilisateur.Deconnection</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RecupererMontant</servlet-name>
         <url-pattern>/RecupererMontant</url-pattern>
@@ -197,8 +241,8 @@
         <url-pattern>/VoirPouboire</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PageFormulaireInsertionProduit</servlet-name>
-        <url-pattern>/PageFormulaireInsertionProduit</url-pattern>
+        <servlet-name>InsererProduit</servlet-name>
+        <url-pattern>/InsererProduit</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PourBoire</servlet-name>
@@ -233,16 +277,12 @@
         <url-pattern>/PayerPlat</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>VueCommandeNonPaye</servlet-name>
-        <url-pattern>/VueCommandeNonPaye</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ConstituantPlatsGeneralise</servlet-name>
         <url-pattern>/ConstituantPlatsGeneralise</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PageFormulaireInventaire</servlet-name>
-        <url-pattern>/PageFormulaireInventaire</url-pattern>
+        <servlet-name>Inventaire</servlet-name>
+        <url-pattern>/Inventaire</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>FaireInventaire</servlet-name>
@@ -296,9 +336,85 @@
         <servlet-name>AccueilCaisse</servlet-name>
         <url-pattern>/AccueilCaisse</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PayerCommande</servlet-name>
+        <url-pattern>/PayerCommande</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccueilCuisine</servlet-name>
+        <url-pattern>/AccueilCuisine</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FabriquerPlat</servlet-name>
+        <url-pattern>/FabriquerPlat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccueilAdmin</servlet-name>
+        <url-pattern>/AccueilAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ModifierRecette</servlet-name>
+        <url-pattern>/ModifierRecette</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GererStock</servlet-name>
+        <url-pattern>/GererStock</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VueCommandeNonPaye</servlet-name>
+        <url-pattern>/VueCommandeNonPaye</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatAchat</servlet-name>
+        <url-pattern>/StatAchat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatVente</servlet-name>
+        <url-pattern>/StatVente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>fenStatAchat</servlet-name>
+        <url-pattern>/fenStatAchat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>fenStatVente</servlet-name>
+        <url-pattern>/fenStatVente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Deconnection</servlet-name>
+        <url-pattern>/Deconnection</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <servlet>
+        <servlet-name>AccueilCaisse</servlet-name>
+        <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccueilCaisse</servlet-name>
+        <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccueilCaisse</servlet-name>
+        <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccueilCaisse</servlet-name>
+        <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccueilCaisse</servlet-name>
+        <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccueilCaisse</servlet-name>
+        <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccueilCaisse</servlet-name>
+        <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
+    </servlet>
 </web-app>

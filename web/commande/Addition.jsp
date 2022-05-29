@@ -19,7 +19,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="bootstrap-4.3-2.1-dist\css\bootstrap.min.css" rel="stylesheet">
-        <title>JSP Page</title>
+        <title>Addition</title>
     </head>
     <body>
 

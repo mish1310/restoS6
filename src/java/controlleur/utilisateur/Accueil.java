@@ -37,12 +37,13 @@ public class Accueil extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/plain");
         try {
-            List<Categorie> listeCategorie = new Categorie().selectAll();
+            /*List<Categorie> listeCategorie = new Categorie().selectAll();
             List<Serveur> listeServeur=new Serveur().selectAll();
             
             request.setAttribute("listeCategorie", listeCategorie);
             RequestDispatcher dispat = request.getRequestDispatcher("produit/formulaireRechercheProduit.jsp");
-            dispat.forward(request, response);
+            dispat.forward(request, response);*/
+            response.sendRedirect("PageFormulaireInsertionCommande");
         } catch (Exception ex) {
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {

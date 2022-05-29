@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ITU/S6/Baovola/restoS6/src/java/controlleur/caisse/AccueilCaisse.java</file>
-            <file>file:/D:/ITU/S6/Baovola/restoS6/web/commande/Addition.jsp</file>
-            <file>file:/D:/ITU/S6/Baovola/restoS6/web/commande/formulaireCommande.jsp</file>
-            <file>file:/D:/ITU/S6/Baovola/restoS6/web/caisse/listeCommandeNonPaye.jsp</file>
+            <file>file:/D:/ITU/S6/Baovola/restoS6/src/java/modele/DBConnection.java</file>
+            <file>file:/D:/ITU/S6/Baovola/restoS6/web/produit/recettePlat.jsp</file>
+            <file>file:/D:/ITU/S6/Baovola/restoS6/src/java/modele/Produit.java</file>
+            <file>file:/D:/ITU/S6/Baovola/restoS6/src/java/controlleur/produit/ModifierRecette.java</file>
+            <file>file:/D:/ITU/S6/Baovola/restoS6/web/produit/listeProduit.jsp</file>
+            <file>file:/D:/ITU/S6/Baovola/restoS6/src/java/controlleur/produit/RecetteProduit.java</file>
         </group>
     </open-files>
 </project-private>

@@ -15,7 +15,7 @@
         <title>Liste des commandes non payés</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="bootstrap-4.3-2.1-dist\css\bootstrap.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     </head>
 
     <body>
@@ -36,7 +36,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page"
-                               href="VueCommandeNonPaye">Commandes en cours</a>
+                               href="VueCommandeNonPaye">Modification de commande</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="VueProduitNonLivre">Livraison de produit</a>
@@ -52,7 +52,7 @@
         <div class="container" style="margin-top : 5vh;">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h1>Listes des commandes non payés</h1>
+                    <h1>Listes des commandes non clos</h1>
                 </div>
             </div>
             <div class="row">
@@ -64,7 +64,6 @@
                                 <th scope="col">Montant du commande</th>
                                 <th scope="col">Montant payés</th>
                                 <th scope="col">Ajout de commande</th>
-                                <th scope="col">Proceder au payement</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,11 +80,6 @@
                                 </td>
                                 <td>
                                     <a href="ModifierCommande?idCommande=<%=listeCommandeNonPayes.get(i).getIdCommande() %>" class="btn btn-primary" > Ajouter des plats </a>
-                                </td>
-                                <td>
-                                    <a href="VuePayementCommande?idCommande=<%=listeCommandeNonPayes.get(i).getIdCommande()%>" class="btn btn-primary">
-                                        Procéder au payement
-                                    </a>
                                 </td>
                             </tr>
                             <%}%>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controlleur.produit;
+package controlleur.statistique;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,13 +13,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modele.Produit;
+import modele.StatVenteProduit;
+
 
 /**
  *
- * @author User
+ * @author Dx2Big
  */
-public class PageFormulaireInsertionProduit extends HttpServlet {
+public class StatVente extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,17 +33,22 @@ public class PageFormulaireInsertionProduit extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+      StatVenteProduit s=new StatVenteProduit();
         try {
-            List<Produit> listeProduitVendable = new Produit().selectAllVendable();
-            request.setAttribute("listeProduitVendable", listeProduitVendable);
-            RequestDispatcher dispat = request.getRequestDispatcher("formulaireInsertionCommande.jsp");
-            dispat.forward(request, response);
-        } catch(Exception ex){
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-                out.print(ex.getMessage());
-            }   
+            request.setAttribute("verif",1);
+            String annee=request.getParameter("annee");
+            List<StatVenteProduit> liste=s.listeVente(annee);
+            request.setAttribute("statVenteProduit", liste);
+                RequestDispatcher dispat = request.getRequestDispatcher("statistique/statVenteProduit.jsp");
+                dispat.forward(request, response);
+            
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally{
+            
         }
     }
 
