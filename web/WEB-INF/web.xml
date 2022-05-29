@@ -148,6 +148,38 @@
         <servlet-name>AccueilCaisse</servlet-name>
         <servlet-class>controlleur.caisse.AccueilCaisse</servlet-class>
     </servlet>
+     <servlet>
+        <servlet-name>StatVente</servlet-name>
+        <servlet-class>controlleur.statistique.StatVente</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>fenStatVente</servlet-name>
+        <servlet-class>controlleur.statistique.fenStatVente</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>fenStatAchat</servlet-name>
+        <servlet-class>controlleur.statistique.fenStatAchat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatAchat</servlet-name>
+        <servlet-class>controlleur.statistique.StatAchat</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StatVente</servlet-name>
+        <url-pattern>/StatVente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>fenStatVente</servlet-name>
+        <url-pattern>/fenStatVente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>fenStatAchat</servlet-name>
+        <url-pattern>/fenStatAchat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatAchat</servlet-name>
+        <url-pattern>/StatAchat</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RecupererMontant</servlet-name>
         <url-pattern>/RecupererMontant</url-pattern>

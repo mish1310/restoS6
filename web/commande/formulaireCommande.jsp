@@ -24,7 +24,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Formulaire de commande</title>
-        <link href="bootstrap-4.3-2.1-dist\css\bootstrap.min.css" rel="stylesheet">
+        <link href=".\assets\bootstrap\css\bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
 
@@ -48,6 +48,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="VueProduitNonLivre">Livraison de produit</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="statistique/index.jsp">Statistiques</a>
                         </li>
                     </ul>
                 </div>

@@ -15,7 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Resultat montant</title>
-        <link href="bootstrap-4.3-2.1-dist\css\bootstrap.min.css" rel="stylesheet">
+       <link href=".\assets\bootstrap\css\bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="form-group row">

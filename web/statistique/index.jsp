@@ -26,7 +26,7 @@
 
     }
     for (int j = 0; j < dataGraphe.size(); j++) {
-        out.println(dataGraphe.get(j).getY());
+        // out.println(dataGraphe.get(j).getY());
     }
     String jsonStr = p.convertJson(dataGraphe);
     //out.println(jsonStr);
@@ -66,7 +66,7 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="style\vendor\bootstrap\css\bootstrap.min.css" rel="stylesheet">
+        <link href="..\assets\bootstrap\css\bootstrap.min.css" rel="stylesheet">
         <script>
             window.onload = async function () {
                 // var quantiteMax = <% //json_encode($quantite)%>;
@@ -196,18 +196,48 @@ and open the template in the editor.
         </script>
     </head>
     <body>
-
+        <nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Second navbar example">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/restoS6/Accueil">Serveur</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarsExample02" aria-controls="navbarsExample02"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarsExample02">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page"
+                               href="/restoS6/PageFormulaireInsertionCommande">Insertion de commande</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page"
+                               href="/restoS6/PageFormulaireInserionCommande">Modification de commande</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/restoS6/VueProduitNonLivre">Livraison de produit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="index.jsp">Statistiques</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="collapse navbar-collapse" id="">
+                    <a class="btn btn-danger" href="/restoS6/Deconnection">Deconnection</a>
+                </div>
+            </div>
+        </nav>
+        
+        
+            <a class="btn btn-dark" type="submit" href="/restoS6/fenStatVente">Vente Produit</a>
+            <a class="btn btn-dark" type="submit" href="/restoS6/fenStatAchat">Achat Produit</a>
+        
         <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
-        <form action="fenStatVente" method="POST">
-            <button class="btn btn-primary" type="submit">StatVenteProduit</button>
-            </form>
-         <form action="fenStatAchat" method="POST">
-            <button class="btn btn-primary" type="submit">StatAchatProduit</button>
-            </form>
+        
 
-                <script src="js/canvasjs.min.js"></script>
-                <script src="js/jquery-2.1.4.min.js"></script>
-                <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
-                <script src="js/function.js"></script> 
-                </body>
-                </html>
+        <script src="../assets/js/canvasjs.min.js"></script>
+        <script src="../assets/js/jquery-2.1.4.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+        <script src="./assets/js/function.js"></script>
+    </body>
+</html>

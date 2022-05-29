@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controlleur;
+package controlleur.statistique;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,9 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.StatAchatProduit;
-import model.StatVenteProduit;
-import service.ServiceStatAchatProduit;
+import modele.StatAchatProduit;
+import modele.StatVenteProduit;
+
 
 /**
  *
@@ -35,14 +35,14 @@ public class StatAchat extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ServiceStatAchatProduit s=new ServiceStatAchatProduit();
+        StatAchatProduit s=new StatAchatProduit();
         try  {
            request.setAttribute("verif",1);
             String annee=request.getParameter("annee");
             //System.out.println(annee);
-            List<StatAchatProduit> liste=s.statAchat(annee);
+            List<StatAchatProduit> liste=s.listeAchat(annee);
             request.setAttribute("statAchatProduit", liste);
-                RequestDispatcher dispat = request.getRequestDispatcher("statAchatProduit.jsp");
+                RequestDispatcher dispat = request.getRequestDispatcher("statistique/statAchatProduit.jsp");
                 dispat.forward(request, response);
         }
         catch(Exception e)

@@ -17,9 +17,9 @@ public class DBConnection {
     public static Connection getConnection() throws Exception {
         Class.forName("org.postgresql.Driver");
 	    
-        String url = "jdbc:postgresql://localhost:5432/restoS6";    
+        String url = "jdbc:postgresql://localhost:8082/resto";    
         String user = "postgres";
-        String pwd = "mdpprom13";
+        String pwd = "mdpprom";
 	    
         Connection connection = DriverManager.getConnection(url, user, pwd);
         return connection;
