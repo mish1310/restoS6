@@ -9,13 +9,14 @@
     List<StatVenteProduit> listeProduit = (List<StatVenteProduit>) request.getAttribute("statVenteProduit");
     Position p = new Position();
     List<Position> dataGraphe = new ArrayList();
+    
     for (int ii = 0; ii < listeProduit.size(); ii++) {
-
-        dataGraphe.add(new Position((int) listeProduit.get(ii).getMontantTotal(), listeProduit.get(ii).getMois()));
+        String converMonthName= new DateFormatSymbols().getMonths()[Integer.valueOf(listeProduit.get(ii).getMois())];
+        dataGraphe.add(new Position((int) listeProduit.get(ii).getMontantTotal(),converMonthName));
 
     }
     for (int j = 0; j < dataGraphe.size(); j++) {
-        out.println(dataGraphe.get(j).getY());
+        //out.println(dataGraphe.get(j).getY());
     }
     String jsonStr = p.convertJson(dataGraphe);
 
@@ -43,27 +44,17 @@ and open the template in the editor.
                 var chart = new CanvasJS.Chart("chartContainer", {
                     animationEnabled: true,
                     title: {
-                        text: "Statistiques ventes des produits"
+                        text: "Statistiques Ventes des Produits"
                     },
 
                     data: [{
                             type: "column",
-                            /*dataPoints: [
-                             
-                             {x: 10, y: 71 },
-                             { x: 20, y: 55 },
-                             { x: 30, y: 50 },
-                             { x: 40, y: 65 },
-                             { x: 50, y: 95 },
-                             { x: 60, y: 68 },
-                             { x: 70, y: 28 },
-                             { x: 80, y: 34 },
-                             { x: 90, y: 14 }
-                             
-                             ]*/
                             dataPoints: dataGraph
 
-                        }]
+                        }],
+                        axisY:{
+                        suffix:" Ar"
+                    }
 
                 });
                 chart.render();
