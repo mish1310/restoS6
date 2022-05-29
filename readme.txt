@@ -15,5 +15,22 @@ requete statVenteProduit:
 	select sum(prixTotal) as montantTotal , extract(month from dateCommande) as mois,extract(year from dateCommande) as annee 
 	from statVenteProduit group by extract(month from dateCommande) ,extract(year from dateCommande);
 
+Controlleur:
+	statistique:
+		fenStatAchat.java(view statAchatProduit)
+		fenStatVente.java(view statVenteProduit)
+		StatAchat.java(view statAchatProduit)
+		StatVente.java(view statVenteProduit)
+view:
+	satistique:
+		index.jsp
+		statVenteProduit.jsp
+		statAchatProduit.jsp
+
+modele:
+	StatVenteProduit.java
+	StatAchatProduit.java
+
+
 
 	
