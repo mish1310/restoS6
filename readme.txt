@@ -28,9 +28,17 @@ view:
 		statAchatProduit.jsp
 
 modele:
-	StatVenteProduit.java
+	StatVenteProduit.java:
+		Methode: List listeVente(String annee)
 	StatAchatProduit.java
+		Methode: List listeAchat(String annee)
 
-
+Navigation:
+	navBar statistique=>index.jsp :
+		Button vente produit=>fenStatVente.java=>statVenteProduit.jsp:
+			Button view=>StatVente.java(appel function listeVente(annee))=>statVenteProduit.jsp
+		
+		Button stat achat Produit=>fenStatAchat.java=>statAchatProuit.jsp:
+			Button view=>StatAchat.java(appel function listeAchat(annee))=>statAchatP*roduit.jsp
 
 	
