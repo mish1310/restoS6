@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Categorie;
 import modele.Produit;
+import modele.Profil;
 
 /**
  *
@@ -33,8 +34,12 @@ public class ListeProduit extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             List<Categorie> categories = new Categorie().selectAll();
             request.setAttribute("categories", categories);
 

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DetailCommande;
+import modele.Profil;
 
 /**
  *
@@ -32,6 +33,11 @@ public class FabriquerPlat extends HttpServlet {
             throws ServletException, IOException {
         
         try{
+            Boolean authentification = Profil.authentifier(3, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             DetailCommande dc = new DetailCommande();
             dc.setIdDetailCommande(Integer.valueOf(request.getParameter("idDetailCommande")));
             dc.fabriquer();

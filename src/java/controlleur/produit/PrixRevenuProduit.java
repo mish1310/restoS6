@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Produit;
+import modele.Profil;
 
 /**
  *
@@ -34,6 +35,11 @@ public class PrixRevenuProduit extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             Produit p = new Produit();
             p.setIdProduit(Integer.valueOf(request.getParameter("idProduit")));
             p = p.select();
@@ -43,7 +49,7 @@ public class PrixRevenuProduit extends HttpServlet {
             request.setAttribute("prixRevient", p.getPrixUnitaire() - prixFabrication);
             List<Produit> listeConstituantProduit = p.getAllConstituant();
             request.setAttribute("listeConstituantProduit", listeConstituantProduit);
-            RequestDispatcher dispat = request.getRequestDispatcher("revenuProduit.jsp");
+            RequestDispatcher dispat = request.getRequestDispatcher("produit/revenuProduit.jsp");
             dispat.forward(request, response);
         } catch (Exception ex) {
             response.setContentType("text/html;charset=UTF-8");

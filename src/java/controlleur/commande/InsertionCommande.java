@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Commande;
 import modele.DetailCommande;
+import modele.Profil;
 import modele.Serveur;
 import modele.Table;
 
@@ -39,6 +40,11 @@ public class InsertionCommande extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/plain");
         try{
+            Boolean authentification = Profil.authentifier(2, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             Commande c = new Commande();
             // recuperation du liste des detailsCommande
             HttpSession session = request.getSession();

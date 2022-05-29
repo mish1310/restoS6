@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Commande;
 import modele.DetailCommande;
+import modele.Profil;
 
 /**
  *
@@ -34,6 +35,10 @@ public class VuePayementCommande extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            Boolean authentification = Profil.authentifier(4, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
             // recuperation des objets
             Commande commande = new Commande(Integer.valueOf(request.getParameter("idCommande")));
             DetailCommande detailCommande = new DetailCommande(Integer.valueOf(request.getParameter("idDetailCommande")));

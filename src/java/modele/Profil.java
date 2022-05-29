@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Statement;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -20,6 +22,30 @@ public class Profil {
     private int idProfil;
     private String nomProfil;
     private String motDePasse;
+    
+    public static boolean authentifier(int idProfil, HttpServletRequest request) throws Exception{
+        boolean retour = true;
+        Connection con = DBConnection.createDataSource().getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            Profil profilSession = new Profil();
+            HttpSession session = request.getSession();
+            profilSession = (Profil)session.getAttribute("profil");
+            System.out.println(profilSession);
+            if(profilSession == null){
+                return false;
+            }
+            if(idProfil != profilSession.getIdProfil()){
+                return false;
+            }
+            con.close();
+        }
+        catch(Exception ex){
+            con.close();
+            ex.printStackTrace();
+        }
+        return retour;
+    }
     
     public boolean login() throws Exception{
         boolean retour = false;
@@ -65,6 +91,10 @@ public class Profil {
     public Profil(int idProfil, String nomProfil) {
         this.idProfil = idProfil;
         this.nomProfil = nomProfil;
+    }
+    
+    public Profil() {
+        
     }
     
     public int getIdProfil() {

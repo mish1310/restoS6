@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Produit;
+import modele.Profil;
 
 /**
  *
@@ -34,6 +35,10 @@ public class RecetteProduit extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
             // Récuperation du produit avec l'id
             Produit produit = new Produit();
             produit.setIdProduit(Integer.valueOf(request.getParameter("idProduit")));

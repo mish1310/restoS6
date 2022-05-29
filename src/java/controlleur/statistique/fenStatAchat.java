@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.Profil;
 import modele.StatAchatProduit;
 import modele.StatVenteProduit;
 
@@ -37,6 +38,11 @@ public class fenStatAchat extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         StatAchatProduit s=new StatAchatProduit();
         try{
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             /* TODO output your page here. You may use following sample code. */
             String annee=request.getParameter("annee");
              List<StatAchatProduit> liste=s.listeAchat(annee);

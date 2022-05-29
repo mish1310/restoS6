@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Commande;
+import modele.Profil;
 
 /**
  *
@@ -35,6 +36,11 @@ public class VueCommandeNonPaye extends HttpServlet {
             throws ServletException, IOException {
         
         try{
+            Boolean authentification = Profil.authentifier(2, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             List<Commande> listeCommandeNonPayes = Commande.getCommandeNonPaye();
             request.setAttribute("listeCommandeNonPayes", listeCommandeNonPayes);
             

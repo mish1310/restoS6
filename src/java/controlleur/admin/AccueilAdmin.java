@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.Profil;
 
 /**
  *
@@ -31,6 +32,11 @@ public class AccueilAdmin extends HttpServlet {
             throws ServletException, IOException {
         
         try{
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             response.sendRedirect("Inventaire");
         }
         catch(Exception ex){

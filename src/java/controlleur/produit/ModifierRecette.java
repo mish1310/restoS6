@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Produit;
+import modele.Profil;
 
 /**
  *
@@ -32,6 +33,10 @@ public class ModifierRecette extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
             // Modification de constituant
             if (request.getParameter("produitConstituant") != null) {
                 Produit produitConstituant = new Produit();

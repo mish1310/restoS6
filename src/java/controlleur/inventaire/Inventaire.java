@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Produit;
+import modele.Profil;
 
 /**
  *
@@ -47,8 +48,12 @@ public class Inventaire extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("mandalo");
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             List<modele.Inventaire> inventaires = modele.Inventaire.selectAll();
             request.setAttribute("inventaires", inventaires);
             RequestDispatcher dispat = request.getRequestDispatcher("produit/inventaire.jsp");

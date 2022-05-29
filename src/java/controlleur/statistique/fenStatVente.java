@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.Profil;
 import modele.StatVenteProduit;
 
 
@@ -36,6 +37,11 @@ public class fenStatVente extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
          StatVenteProduit s=new StatVenteProduit();
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             //request.setAttribute("verif",1);
             String annee=request.getParameter("annee");
              List<StatVenteProduit> liste=s.listeVente(annee);

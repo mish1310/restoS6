@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Commande;
+import modele.Profil;
 
 /**
  *
@@ -34,6 +35,10 @@ public class AccueilCaisse extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            Boolean authentification = Profil.authentifier(4, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
             // liste des commandes non payés
             List<Commande> listeCommandeNonPayes = Commande.getCommandeNonPaye();
             request.setAttribute("listeCommandeNonPaye", listeCommandeNonPayes);

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.DetailCommande;
+import modele.Profil;
 
 /**
  *
@@ -32,19 +33,28 @@ public class SupprimerDetailCommandeModification extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
-        int idProduit = Integer.valueOf(request.getParameter("idProduit"));
-        HttpSession session = request.getSession(); 
-        List<DetailCommande> listeDetailCommandeAjout = (List<DetailCommande>) session.getAttribute("listeDetailCommandeAjout");
-        for(int i = 0; i < listeDetailCommandeAjout.size(); i++){
-            if(listeDetailCommandeAjout.get(i).getProduit().getIdProduit() == idProduit ){
-                listeDetailCommandeAjout.remove(i);
-                break;
+
+        try {
+
+            Boolean authentification = Profil.authentifier(2, request);
+            if (!authentification) {
+                response.sendRedirect("PageFormulaireLogin");
             }
+
+            int idProduit = Integer.valueOf(request.getParameter("idProduit"));
+            HttpSession session = request.getSession();
+            List<DetailCommande> listeDetailCommandeAjout = (List<DetailCommande>) session.getAttribute("listeDetailCommandeAjout");
+            for (int i = 0; i < listeDetailCommandeAjout.size(); i++) {
+                if (listeDetailCommandeAjout.get(i).getProduit().getIdProduit() == idProduit) {
+                    listeDetailCommandeAjout.remove(i);
+                    break;
+                }
+            }
+
+            response.sendRedirect("ModifierCommande?idCommande=" + request.getParameter("commande"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        
-        response.sendRedirect("ModifierCommande?idCommande="+request.getParameter("commande"));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

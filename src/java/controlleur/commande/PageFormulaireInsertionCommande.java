@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.Produit;
+import modele.Profil;
 import modele.Serveur;
 import modele.Table;
 
@@ -35,8 +36,11 @@ public class PageFormulaireInsertionCommande extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
         try {
+            Boolean authentification = Profil.authentifier(2, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
             // Liste des serveur
             List<Serveur> listeServeur = new Serveur().selectAll();
             request.setAttribute("listeServeur", listeServeur);

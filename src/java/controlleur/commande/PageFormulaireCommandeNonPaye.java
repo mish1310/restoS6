@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modele.Profil;
 
 /**
  *
@@ -30,9 +31,17 @@ public class PageFormulaireCommandeNonPaye extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/plain");
-        RequestDispatcher dispat = request.getRequestDispatcher("formulaireCommandeNonPaye.jsp");
-        dispat.forward(request, response);
+        try {
+            Boolean authentification = Profil.authentifier(4, request);
+            if (!authentification) {
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            response.setContentType("text/plain");
+            RequestDispatcher dispat = request.getRequestDispatcher("formulaireCommandeNonPaye.jsp");
+            dispat.forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

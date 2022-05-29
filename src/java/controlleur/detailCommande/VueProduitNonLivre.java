@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DetailCommande;
+import modele.Profil;
 
 /**
  *
@@ -34,6 +35,11 @@ public class VueProduitNonLivre extends HttpServlet {
             throws ServletException, IOException {
         
         try{
+            Boolean authentification = Profil.authentifier(2, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             List<DetailCommande> listeDetailCommandeNonLivre = DetailCommande.getDetailCommandeNonLivre();
             
             request.setAttribute("listeDetailCommandeNonLivre", listeDetailCommandeNonLivre);

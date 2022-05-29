@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import modele.Commande;
 import modele.DetailCommande;
 import modele.Paiement;
+import modele.Profil;
 import modele.TypePaiement;
 
 /**
@@ -53,6 +54,11 @@ public class PayerCommande extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            Boolean authentification = Profil.authentifier(4, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             // recuperation des objets
             Commande commande = new Commande(Integer.valueOf(request.getParameter("idCommande")));
             commande = commande.select();

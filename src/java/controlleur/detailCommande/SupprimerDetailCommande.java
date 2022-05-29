@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.DetailCommande;
+import modele.Profil;
 
 /**
  *
@@ -32,20 +33,29 @@ public class SupprimerDetailCommande extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
-        int idProduit = Integer.valueOf(request.getParameter("idProduit"));
-        HttpSession session = request.getSession(); 
-        List<DetailCommande> listeDetailCommande = (List<DetailCommande>) session.getAttribute("listeDetailCommande");
-        for(int i = 0; i < listeDetailCommande.size(); i++){
-            if(listeDetailCommande.get(i).getProduit().getIdProduit() == idProduit ){
-                listeDetailCommande.remove(i);
-                break;
+
+        try {
+
+            Boolean authentification = Profil.authentifier(2, request);
+            if (!authentification) {
+                response.sendRedirect("PageFormulaireLogin");
             }
+
+            int idProduit = Integer.valueOf(request.getParameter("idProduit"));
+            HttpSession session = request.getSession();
+            List<DetailCommande> listeDetailCommande = (List<DetailCommande>) session.getAttribute("listeDetailCommande");
+            for (int i = 0; i < listeDetailCommande.size(); i++) {
+                if (listeDetailCommande.get(i).getProduit().getIdProduit() == idProduit) {
+                    listeDetailCommande.remove(i);
+                    break;
+                }
+            }
+
+            response.sendRedirect("PageFormulaireInsertionCommande");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        
-        response.sendRedirect("PageFormulaireInsertionCommande");
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

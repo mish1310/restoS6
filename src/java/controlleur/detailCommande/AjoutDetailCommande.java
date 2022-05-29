@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modele.DetailCommande;
 import modele.Produit;
+import modele.Profil;
 import modele.Serveur;
 
 /**
@@ -36,8 +37,12 @@ public class AjoutDetailCommande extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         try {
+            Boolean authentification = Profil.authentifier(2, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             HttpSession session = request.getSession(); 
             List<DetailCommande> listeDetailCommande = (List<DetailCommande>) session.getAttribute("listeDetailCommande");
             if(listeDetailCommande == null){

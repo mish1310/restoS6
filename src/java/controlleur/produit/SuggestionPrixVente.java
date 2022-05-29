@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Produit;
+import modele.Profil;
 
 /**
  *
@@ -35,6 +36,10 @@ public class SuggestionPrixVente extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/plain");
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
             double montantInf = Double.valueOf(request.getParameter("montantInf"));
             double montantSup = Double.valueOf(request.getParameter("montantSup"));
             double pourcentageSuggestion = Double.valueOf(request.getParameter("pourcentageSuggestion"));

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.Produit;
+import modele.Profil;
 import modele.Stock;
 
 /**
@@ -52,6 +53,11 @@ public class GererStock extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             List<Stock> stocks = Stock.selectAll();
             request.setAttribute("stocks", stocks);
 
@@ -79,6 +85,11 @@ public class GererStock extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            Boolean authentification = Profil.authentifier(1, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             // recherche
             if (request.getParameter("rechercher") != null) {
                 Produit produit = null;

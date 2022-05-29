@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import modele.Commande;
 import modele.DetailCommande;
 import modele.Produit;
+import modele.Profil;
 import modele.Serveur;
 
 /**
@@ -52,6 +53,11 @@ public class ModifierCommande extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            Boolean authentification = Profil.authentifier(2, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             response.setContentType("text/html;charset=UTF-8");
 
             int idCommande = Integer.valueOf(request.getParameter("idCommande"));

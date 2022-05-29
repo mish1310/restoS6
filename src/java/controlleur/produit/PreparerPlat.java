@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modele.DetailCommande;
+import modele.Profil;
 
 /**
  *
@@ -34,6 +35,11 @@ public class PreparerPlat extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/plain");
         try {
+            Boolean authentification = Profil.authentifier(3, request);
+            if(!authentification){
+                response.sendRedirect("PageFormulaireLogin");
+            }
+            
             DetailCommande detailCommande = new DetailCommande(Integer.valueOf(request.getParameter("idDetailCommande")));
             detailCommande.preparer();
             List<DetailCommande> platAFaire = DetailCommande.getDetailCommandeNonFini();
