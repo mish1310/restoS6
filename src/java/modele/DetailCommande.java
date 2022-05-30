@@ -75,7 +75,6 @@ public class DetailCommande {
                 retour.add(detailCommande);
             }
         } catch (Exception ex) {
-            con.close();
             throw ex;
         }
         return retour;
@@ -152,6 +151,7 @@ public class DetailCommande {
                          rs.getDate("dateCommande"));
                 retour.add(detailCommande);
             }
+            con.close();
         } catch (Exception ex) {
             con.close();
             throw ex;
@@ -214,8 +214,9 @@ public class DetailCommande {
 
     public void insert(Connection con) throws Exception {
         Statement stmt = con.createStatement();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String requete = "INSERT INTO detailsCommande (idCommande, idProduit, prixUnitaire, idServeur, dateCommande) VALUES(" + this.commande.getIdCommande() + "," + this.produit.getIdProduit() + ", " + this.produit.getPrixUnitaire() + ", "+ this.serveur.getIdServeur() +", '"+dateFormat.format(this.dateCommande)+"' )";
+        System.out.println(requete);
         Boolean rs = stmt.execute(requete);
         stmt.close();
     }

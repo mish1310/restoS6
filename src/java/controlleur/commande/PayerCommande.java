@@ -118,8 +118,13 @@ public class PayerCommande extends HttpServlet {
                 paiement.setTypePayement(typePaiement);
                 Calendar dateAct = Calendar.getInstance();
                 paiement.setDatePayement(dateAct.getTime());
-                paiement.insert();
-                response.sendRedirect("PayerCommande?idCommande=" + commande.getIdCommande());
+                //paiement.insert();
+                
+                if(commande.verifierPaiement()){
+                    response.sendRedirect("PayerCommande");
+                }
+                
+                //response.sendRedirect("PayerCommande?idCommande=" + commande.getIdCommande());
             }
 
         } catch (Exception ex) {

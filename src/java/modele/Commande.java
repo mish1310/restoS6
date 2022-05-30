@@ -29,7 +29,25 @@ public class Commande {
     private Double sommePayement;
     private List<DetailCommande> listeDetailCommande;
     
-    
+    public boolean verifierPaiement() throws Exception {
+        boolean retour = true;
+        Connection con = DBConnection.getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            String requete = "SELECT sommepayement FROM commandeNonPaye WHERE idCommande=" + this.idCommande;
+            ResultSet rs = stmt.executeQuery(requete);
+            while(rs.next()){
+                con.close();
+                return false;
+            }
+            con.close();
+        }
+        catch(Exception ex){
+            con.close();
+        }
+        System.out.println(retour);
+        return true;
+    }
     
     public Commande select() throws Exception {
         Connection con = DBConnection.getConnection();
@@ -51,6 +69,7 @@ public class Commande {
             while(rs.next()){
                 c.setSommePayement(rs.getDouble("sommePayement"));
             }
+            con.close();
         }
         catch(Exception ex){
             if(con != null) con.close();
@@ -64,13 +83,20 @@ public class Commande {
         try {
             Calendar dateAct = Calendar.getInstance();
             Date dateAjout = dateAct.getTime();
+            Double montantAjout = 0.0;
+            // insertion des details commande
             for (int i = 0; i < listeDetailCommande.size(); i++) {
                 System.out.println(listeDetailCommande.toString());
                 listeDetailCommande.get(i).setCommande(this);
                 listeDetailCommande.get(i).setServeur(this.serveur);
                 listeDetailCommande.get(i).setDateCommande(dateAjout);
                 listeDetailCommande.get(i).insert(con);
+                montantAjout += listeDetailCommande.get(i).getPrixUnitaire();
             }
+            // update montant de la commande
+            String requete = "UPDATE commande SET prixtotal = prixtotal +"+montantAjout;
+            Boolean rs = con.createStatement().execute(requete);
+            con.close();
         } catch (Exception ex) {
             if (con != null) {
                 con.close();
@@ -271,12 +297,12 @@ public class Commande {
         try {
             Statement stmt = con.createStatement();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String requete = "INSERT INTO commande (idTable,dateCommande, prixTotal) VALUES(" + this.table.getIdTable() + " , '" + dateFormat.format(this.dateCommande) + "', 0 )";
+            String requete = "INSERT INTO commande (idTable,dateCommande, prixTotal) VALUES(" + this.table.getIdTable() + " , '" + dateFormat.format(this.dateCommande) + "', "+this.prixTotal+" )";
             Boolean rs = stmt.execute(requete);
-            requete = "SELECT idCommande from commande ORDER BY dateCommande DESC";
+            requete = "SELECT MAX(idcommande) from commande";
             ResultSet res = stmt.executeQuery(requete);
             while (res.next()) {
-                this.idCommande = res.getInt("idCommande");
+                this.idCommande = res.getInt("max");
             }
             for (int i = 0; i < this.listeDetailCommande.size(); i++) {
                 this.listeDetailCommande.get(i).setCommande(this);

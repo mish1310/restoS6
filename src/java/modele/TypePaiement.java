@@ -30,6 +30,7 @@ public class TypePaiement {
                 TypePaiement tp = new TypePaiement(rs.getInt("idtypepaiement"), rs.getString("mode"));
                 listeTypePaiement.add(tp);
             }
+            con.close();
         }
         catch(Exception ex) {
             if(con != null) con.close();

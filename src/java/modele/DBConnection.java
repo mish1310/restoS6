@@ -18,8 +18,10 @@ public class DBConnection {
     private static final String url = "jdbc:postgresql://localhost:5432/restoS6";
     private static final String user = "postgres";
     private static final String pwd = "mdpprom13";
+    
+    private static final DataSource dataSource = createDataSource();
 
-    public static DataSource createDataSource() {
+    private static DataSource createDataSource() {
         /* use a data source with connection pooling */
         org.postgresql.ds.PGPoolingDataSource ds = new org.postgresql.ds.PGPoolingDataSource();
         ds.setUrl(url);
@@ -38,6 +40,10 @@ public class DBConnection {
 
         Connection connection = DriverManager.getConnection(url, user, pwd);
         return connection;
+    }
+
+    public static DataSource getDataSource() {
+        return dataSource;
     }
 
 }

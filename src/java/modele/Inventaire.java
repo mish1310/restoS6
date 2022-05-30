@@ -27,7 +27,7 @@ public class Inventaire {
     
     
     public void faireInventaire() throws Exception {
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         con.setAutoCommit(false);
         try {
             Statement stmt = con.createStatement();
@@ -94,7 +94,7 @@ public class Inventaire {
 
     public static List<Inventaire> rechercher(Produit produit) throws Exception {
         List<Inventaire> retour = new ArrayList<Inventaire>();
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             String requete = "SELECT i.idproduit, i.idinventaire, i.quantite, i.dateinventaire FROM inventaire i JOIN produit p ON i.idproduit=p.idproduit WHERE intitule LIKE '%"+produit.getIntitule()+"%'";
@@ -120,7 +120,7 @@ public class Inventaire {
     
     public static List<Inventaire> selectAll() throws Exception {
         List<Inventaire> retour = new ArrayList<Inventaire>();
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             String requete = "SELECT * FROM inventaire";

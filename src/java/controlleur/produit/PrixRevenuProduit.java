@@ -43,6 +43,7 @@ public class PrixRevenuProduit extends HttpServlet {
             Produit p = new Produit();
             p.setIdProduit(Integer.valueOf(request.getParameter("idProduit")));
             p = p.select();
+            request.setAttribute("produit", p);
             double prixFabrication = p.getCoutFabrication();
             request.setAttribute("prixFabrication", prixFabrication);
             request.setAttribute("prixUnitaire", p.getPrixUnitaire());

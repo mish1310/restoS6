@@ -1,12 +1,13 @@
 <%@page import="java.util.List"%>
 <%@page import="modele.Produit"%>
+<% Produit produit = (Produit)request.getAttribute("produit"); %>
 <!DOCTYPE html>
 <html>
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <title>Prix de revient du produit</title>
+        <title>Prix de revient : <%=produit.getIntitule() %></title>
     </head>
 
     <body>
@@ -49,7 +50,7 @@
 
             <div class="row">
                 <div class="col-12 text-center">
-        <h1>Detail(s) constituant</h1>
+        <h1>Prix de revient : <%=produit.getIntitule() %></h1>
                 </div>
             </div>
 
@@ -71,7 +72,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <tr>    
                                                     <th>Prix de vente(Ariary)</th>
                                                     <td class="text-right" ><%=request.getAttribute("prixUnitaire")%></td>
                                                 </tr>

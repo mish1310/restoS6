@@ -28,7 +28,7 @@ public class Stock {
 
     public static List<Stock> rechercher(Produit produit, Date dateInf, Date dateSup) throws Exception {
         List<Stock> retour = new ArrayList<Stock>();
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             String requete = "SELECT s.idstock, s.idproduit, s.prixunitaire, s.quantite, s.datestock FROM stock s JOIN produit p ON s.idproduit=p.idproduit";
@@ -72,7 +72,7 @@ public class Stock {
     }
 
     public void insert() throws Exception {
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
@@ -87,7 +87,7 @@ public class Stock {
 
     public static List<Stock> selectAll() throws Exception {
         List<Stock> retour = new ArrayList<Stock>();
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             String requete = "SELECT * FROM stock";

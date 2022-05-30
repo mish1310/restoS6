@@ -51,6 +51,7 @@ public class AjoutDetailCommandeModification extends HttpServlet {
             p = p.select();
             DetailCommande dc = new DetailCommande();
             dc.setProduit(p);
+            dc.setPrixUnitaire(p.getPrixUnitaire());
             int quantite = Integer.valueOf(request.getParameter("quantite"));
             for (int i = 0; i < quantite; i++) {
                 listeDetailCommandeAjout.add(dc);

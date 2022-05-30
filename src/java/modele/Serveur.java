@@ -53,7 +53,6 @@ public class Serveur {
         } catch (Exception ex) {
             throw ex;
         } finally {
-            con.close();
         }
         return sommePourBoire;
     }

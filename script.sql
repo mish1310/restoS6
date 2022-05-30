@@ -126,15 +126,30 @@ UPDATE produit SET prixUnitaire=5000 WHERE idProduit=3;
 UPDATE produit SET prixUnitaire=7000 WHERE idProduit=4;
 UPDATE produit SET prixUnitaire=8000 WHERE idProduit=5;
 
-UPDATE stock SET quantite = 50000 WHERE idStock=1;
-UPDATE stock SET quantite = 10000 WHERE idStock=2;
-UPDATE stock SET quantite = 5000 WHERE idStock=3;
-UPDATE stock SET quantite = 3000 WHERE idStock=4;
-UPDATE stock SET quantite = 10000 WHERE idStock=5;
-UPDATE stock SET quantite = 2000 WHERE idStock=6;
-UPDATE stock SET quantite = 5000 WHERE idStock=7;
-UPDATE stock SET quantite = 1000 WHERE idStock=8;
-UPDATE stock SET quantite = 1000 WHERE idStock=9;
+UPDATE stock SET quantite = 50 WHERE idStock=1;
+UPDATE stock SET quantite = 10 WHERE idStock=2;
+UPDATE stock SET quantite = 5 WHERE idStock=3;
+UPDATE stock SET quantite = 3 WHERE idStock=4;
+UPDATE stock SET quantite = 10 WHERE idStock=5;
+UPDATE stock SET quantite = 2 WHERE idStock=6;
+UPDATE stock SET quantite = 5 WHERE idStock=7;
+UPDATE stock SET quantite = 1 WHERE idStock=8;
+UPDATE stock SET quantite = 1 WHERE idStock=9;
 
+UPDATE stock SET prixUnitaire = prixUnitaire / 1000;
 
 UPDATE profil SET motdepasse='mdpprom13';
+
+UPDATE serveur SET nomServeur = 'Serveur 01' WHERE idserveur=1;
+UPDATE serveur SET nomServeur = 'Serveur 02' WHERE idserveur=2; 
+UPDATE serveur SET nomServeur = 'Serveur 03' WHERE idserveur=3;
+
+CREATE VIEW paiementCommandeAvecImpaye AS(
+	SELECT c.idCommande,
+		CASE
+			WHEN p.montant IS NULL THEN 0
+			ELSE p.montant 
+		END AS montant
+		FROM commande c 
+		LEFT JOIN paiement p ON c.idcommande = p.idcommande
+);

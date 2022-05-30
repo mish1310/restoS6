@@ -110,7 +110,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="pourcentageSuggestion"><b>Pourcentage</b></label>
-                                            <input type="number" class="form-control" name="pourcentageSuggestion" placeholder="%">
+                                            <input type="number" class="form-control" name="pourcentageSuggestion" id="pourcentageSuggestion" placeholder="%">
                                         </div>
                                         <br>
                                         <div class="form-group">
@@ -129,7 +129,7 @@
                         <thead class="table-dark">
                             <tr>
                                 <th scope="col">Nom</th>
-                                <th scope="col">Prix Unitaire</th>
+                                <th scope="col">Prix Unitaire(Ar)</th>
                                 <th scope="col">Categorie</th>
                                 <th scope="col">Prix de revient</th>
                                 <th scope="col">Recette</th>

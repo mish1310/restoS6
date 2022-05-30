@@ -26,7 +26,7 @@ public class Produit {
     private String unite;
     
     public void insert()throws Exception {
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             String requete = "INSERT INTO produit(intitule, idCategorie, prixUnitaire, unite) VALUES ('"+ this.intitule +"', "+ this.categorie.getIdCategorie() +", "+ this.prixUnitaire +", '"+ this.getUnite() +"'  )";
@@ -35,6 +35,7 @@ public class Produit {
             while (rs.next()) {
                 this.idProduit = rs.getInt("max");
             }
+            con.close();
         } catch (Exception ex) {
             con.close();
             throw ex;
@@ -42,7 +43,7 @@ public class Produit {
     }
     
     public static List<Produit> selectAllIngredients() throws Exception {
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         List<Produit> retour = new ArrayList<Produit>();
         try {
             Statement stmt = con.createStatement();
@@ -64,7 +65,7 @@ public class Produit {
     }
     
     public static void insertRecette(Produit produitConstitue, Produit produitConstituant, Double quantite) throws Exception {
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try{
             Statement stmt = con.createStatement();
             String requete = "INSERT INTO ingredientplat(idProduitConstitue, idProduitConstituant, quantite) VALUES("+produitConstitue.getIdProduit()+", "+produitConstituant.getIdProduit()+", "+quantite+" )";
@@ -79,7 +80,7 @@ public class Produit {
     }
     
     public static void supprimerRecette(Produit produitConstitue, Produit produitConstituant) throws Exception {
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try{
             Statement stmt = con.createStatement();
             String requete = "DELETE FROM ingredientplat WHERE idProduitConstituant="+produitConstituant.getIdProduit()+" AND idProduitConstitue="+produitConstitue.getIdProduit();
@@ -93,7 +94,7 @@ public class Produit {
     }
     
     public static void updateRecette(Produit produitConstitue, Produit produitConstituant, Double quantite) throws Exception {
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try{
             Statement stmt = con.createStatement();
             String requete = "UPDATE ingredientplat SET quantite="+quantite+" WHERE idProduitConstituant="+produitConstituant.getIdProduit()+" AND idProduitConstitue="+produitConstitue.getIdProduit();
@@ -107,7 +108,7 @@ public class Produit {
     }
     
     public static List<Produit> selectAllOrderByIntitule() throws Exception {
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         List<Produit> retour = new ArrayList<Produit>();
         try {
             Statement stmt = con.createStatement();
@@ -149,7 +150,7 @@ public class Produit {
     
     public static List<Produit> selectAll() throws Exception {
         List<Produit> retour = new ArrayList<Produit>();
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             String requete = "SELECT * FROM produit";
@@ -303,27 +304,30 @@ public class Produit {
         List retour = new ArrayList();
         Connection con = null;
         try {
-            con = DBConnection.getConnection();
-            List<Produit> listeProduit = new Produit().selectAllVendable();
+            con = DBConnection.getDataSource().getConnection();
+            List<Produit> listeProduit = new Produit().selectAllVendable(con);
             for (int i = 0; i < listeProduit.size(); i++) {
                 Produit p = listeProduit.get(i);
-                double coutFabrication = p.getCoutFabrication();
+                double coutFabrication = p.getCoutFabrication(con);
                 double suggestionPrix = 0;
                 if (montantInf == -1) {
                     if (coutFabrication <= montantSup) {
-                        suggestionPrix += coutFabrication * pourcentageSuggestion / 100;
+                        suggestionPrix += coutFabrication * pourcentageSuggestion / 100.0;
                     }
                 } else if (montantSup == -1) {
                     if (coutFabrication >= montantInf) {
-                        suggestionPrix += coutFabrication * pourcentageSuggestion / 100;
+                        suggestionPrix += coutFabrication * pourcentageSuggestion / 100.0;
                     }
                 } else {
                     if (montantInf <= coutFabrication && coutFabrication <= montantSup) {
-                        suggestionPrix += coutFabrication * pourcentageSuggestion / 100;
+                        suggestionPrix += coutFabrication * pourcentageSuggestion / 100.0;
                     }
                 }
+                System.out.println(montantInf);
+                System.out.println(montantSup);
+                System.out.println(coutFabrication);
                 p.setPrixUnitaire(suggestionPrix);
-                p.update(con);
+                //p.update(con);
                 Object[] r = new Object[2];
                 r[0] = p;
                 r[1] = pourcentageSuggestion;
@@ -339,7 +343,7 @@ public class Produit {
 
     public List<Produit> getAllConstituant() throws Exception {
         List<Produit> retour = new ArrayList<Produit>();
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getDataSource().getConnection();
         try {
             Statement stmt = con.createStatement();
             String requete = "SELECT p.idProduit, p.intitule, p.prixUnitaire, p.idCategorie FROM ingredientPlat iP JOIN produit p ON iP.idProduitConstituant=p.idProduit WHERE idProduitConstitue = " + this.idProduit;
@@ -402,6 +406,22 @@ public class Produit {
         return retour;
     }
 
+    public double getCoutFabrication(Connection con) throws Exception {
+        double retour = 0;
+        try {
+            Statement stmt = con.createStatement();
+            String requete = "SELECT prixTotalFabrication FROM prixFabricationPlat WHERE plat = " + this.idProduit;
+            ResultSet rs = stmt.executeQuery(requete);
+            while (rs.next()) {
+                retour = rs.getDouble("prixTotalFabrication");
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+        }
+        return retour;
+    }
+    
     public double getCoutFabrication() throws Exception {
         double retour = 0;
         Connection con = DBConnection.getConnection();
@@ -444,6 +464,26 @@ public class Produit {
         return retour;
     }
 
+    public List<Produit> selectAllVendable(Connection con) throws Exception {
+        List<Produit> retour = new ArrayList<Produit>();
+        try {
+            Statement stmt = con.createStatement();
+            String requete = "SELECT idProduit, intitule, prixUnitaire, c.idCategorie, c.nomCategorie FROM produit p JOIN categorie c ON p.idCategorie=c.idCategorie WHERE p.idCategorie IS NOT NULL";
+            ResultSet rs = stmt.executeQuery(requete);
+            while (rs.next()) {
+                Produit p = new Produit(rs.getInt("idProduit"), rs.getString("intitule"), rs.getDouble("prixUnitaire"));
+                Categorie c = new Categorie(rs.getInt("idCategorie"));
+                c = c.select();
+                p.setCategorie(c);
+                retour.add(p);
+            }
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+        }
+        return retour;
+    }
+    
     public List<Produit> selectAllVendable() throws Exception {
         List<Produit> retour = new ArrayList<Produit>();
         Connection con = DBConnection.getConnection();

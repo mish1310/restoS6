@@ -49,20 +49,21 @@ public class InsertionCommande extends HttpServlet {
             // recuperation du liste des detailsCommande
             HttpSession session = request.getSession();
             List<DetailCommande> listeDetailCommande = (List<DetailCommande>)session.getAttribute("listeDetailCommande");
-            
-            
             c.setListeDetailCommande(listeDetailCommande);
             
             Calendar dateAct = Calendar.getInstance();
             c.setDateCommande(dateAct.getTime());
             
-            
             Serveur s = new Serveur();
             s.setIdServeur(Integer.valueOf(request.getParameter("serveur")));
+            Double prixTotal = 0.0;
             for(int i = 0; i < listeDetailCommande.size(); i++){
                 listeDetailCommande.get(i).setServeur(s);
                 listeDetailCommande.get(i).setDateCommande(dateAct.getTime());
+                prixTotal += listeDetailCommande.get(i).getPrixUnitaire();
             }
+            
+            c.setPrixTotal(prixTotal);
             
             Table table = new Table();
             table.setIdTable(Integer.valueOf(request.getParameter("table")));

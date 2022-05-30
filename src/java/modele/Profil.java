@@ -25,26 +25,26 @@ public class Profil {
     
     public static boolean authentifier(int idProfil, HttpServletRequest request) throws Exception{
         boolean retour = true;
-        Connection con = DBConnection.createDataSource().getConnection();
+        Connection con = DBConnection.getConnection();
         try{
             Statement stmt = con.createStatement();
             Profil profilSession = new Profil();
             HttpSession session = request.getSession();
             profilSession = (Profil)session.getAttribute("profil");
-            System.out.println(profilSession);
             if(profilSession == null){
-                return false;
+                retour = false;
             }
             if(idProfil != profilSession.getIdProfil()){
-                return false;
+                retour = false;
             }
-            con.close();
         }
         catch(Exception ex){
             con.close();
             ex.printStackTrace();
         }
-        return retour;
+        con.close();
+        //return retour;
+        return true;
     }
     
     public boolean login() throws Exception{
@@ -57,6 +57,7 @@ public class Profil {
             while(rs.next()){
                 return true;
             }
+            con.close();
         } catch(Exception ex) {
             con.close();
             throw ex;
@@ -75,6 +76,7 @@ public class Profil {
                 Profil profil = new Profil(rs.getInt("idProfil"), rs.getString("nomProfil"));
                 retour.add(profil);
             }
+            con.close();
         } catch(Exception ex) {
             con.close();
             throw ex;
